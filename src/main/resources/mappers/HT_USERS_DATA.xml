@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.S20230501.HT_USERS_DATA">
+	<select id="lysUsers" parameterType="HT_USERS_DATA"
+		resultType="HT_USERS_DATA">
+SELECT ROWNUM, x.*
+FROM (
+  SELECT a.*
+  FROM (
+    SELECT ROW_NUMBER() OVER (ORDER BY Users_ID) AS rn, ht_users_data.*
+    FROM ht_users_data
+    WHERE user_code = 103
+  ) a
+  WHERE rn BETWEEN #{start} AND #{end}
+  ORDER BY Users_ID
+) x
+	</select>
+	<select id="lystrainer" parameterType="HT_USERS_DATA"
+		resultType="HT_USERS_DATA">
+SELECT ROWNUM, x.*
+FROM (
+  SELECT a.*
+  FROM (
+    SELECT ROW_NUMBER() OVER (ORDER BY Users_ID) AS rn, ht_users_data.*
+    FROM ht_users_data
+    WHERE user_code = 102
+  ) a
+  WHERE rn BETWEEN #{start} AND #{end}
+  ORDER BY Users_ID
+) x
+	</select>
+	<select id="lysusersTotal" parameterType="HT_USERS_DATA"
+		resultType="int">
+		SELECT
+		count(*)
+		FROM
+		ht_users_data
+		WHERE user_code =103
+	</select>
+	<select id="userTotal" resultType="int"
+		parameterType="HT_USERS_DATA">
+		SELECT COUNT(*)
+		FROM (
+		SELECT a.*
+		FROM ht_users_data a
+		WHERE a.user_code = 103
+		<choose>
+			<when test="search == 'users_ID'">
+				AND users_ID LIKE '%' || #{keyword} || '%'
+			</when>
+			<when test="search == 'users_NAME'">
+				AND users_NAME LIKE '%' || #{keyword} || '%'
+			</when>
+			<otherwise>
+				AND users_ID LIKE '%'
+			</otherwise>
+		</choose>
+		ORDER BY users_ID
+		) x
+	</select>
+	<select id="lysusersSearch1" resultType="int" parameterType="HT_USERS_DATA">
+	SELECT COUNT(*)
+		FROM (
+		SELECT a.*
+		FROM ht_users_data a
+		WHERE a.user_code = 103
+   		<choose>
+			<when test="search == 'users_ID'">
+				AND users_ID LIKE '%' || #{keyword} || '%'
+			</when>
+			<when test="search == 'users_NAME'">
+				AND users_NAME LIKE '%' || #{keyword} || '%'
+			</when>
+			<otherwise>
+				AND users_ID LIKE '%'
+			</otherwise>
+		</choose>
+		ORDER BY users_ID
+		) x
+</select>
+<select id="lysuserssearch" parameterType="HT_USERS_DATA" resultType="HT_USERS_DATA">
+  SELECT *
+  FROM (
+    SELECT ROWNUM rn, a.*
+    FROM (
+      SELECT *
+      FROM HT_USERS_DATA
+      WHERE user_code = 103
+        <choose>
+          <when test="search == 'users_ID'">
+            AND users_ID LIKE '%' || #{keyword} || '%'
+          </when>
+          <when test="search == 'users_NAME'">
+            AND users_NAME LIKE '%' || #{keyword} || '%'
+          </when>
+          <otherwise>
+            AND users_ID LIKE '%'
+          </otherwise>
+        </choose>
+      ORDER BY users_ID
+    ) a
+  ) WHERE rn BETWEEN #{start} AND #{end}
+</select>
+<select id="lystrainerTotal" resultType="int"
+		parameterType="HT_USERS_DATA">
+		SELECT COUNT(*)
+		FROM (
+		SELECT a.*
+		FROM ht_users_data a
+		WHERE a.user_code = 102
+		<choose>
+			<when test="search == 'users_ID'">
+				AND users_ID LIKE '%' || #{keyword} || '%'
+			</when>
+			<when test="search == 'users_NAME'">
+				AND users_NAME LIKE '%' || #{keyword} || '%'
+			</when>
+			<otherwise>
+				AND users_ID LIKE '%'
+			</otherwise>
+		</choose>
+		ORDER BY users_ID
+		) x
+	</select>
+		<select id="lystrainerscTotal" resultType="int" parameterType="HT_USERS_DATA">
+  SELECT COUNT(*)
+  FROM ht_users_data
+  WHERE user_code = 102
+    <choose>
+      <when test="search == 'users_ID'">
+        AND users_ID LIKE '%' || #{keyword} || '%'
+      </when>
+      <when test="search == 'users_NAME'">
+        AND users_NAME LIKE '%' || #{keyword} || '%'
+      </when>
+      <otherwise>
+        AND users_ID LIKE '%'
+      </otherwise>
+    </choose>
+</select>
+<select id="lystrainerSearch" parameterType="HT_USERS_DATA" resultType="HT_USERS_DATA">
+  SELECT *
+  FROM (
+    SELECT ROWNUM rn, a.*
+    FROM (
+      SELECT *
+      FROM HT_USERS_DATA
+      WHERE user_code = 102
+        <choose>
+          <when test="search == 'users_ID'">
+            AND users_ID LIKE '%' || #{keyword} || '%'
+          </when>
+          <when test="search == 'users_NAME'">
+            AND users_NAME LIKE '%' || #{keyword} || '%'
+          </when>
+          <otherwise>
+            AND users_ID LIKE '%'
+          </otherwise>
+        </choose>
+      ORDER BY users_ID
+    ) a
+  ) WHERE rn BETWEEN #{start} AND #{end}
+</select>
+</mapper>

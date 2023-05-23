@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.S20230501.Ticket">
+	<select id="ListTicket" parameterType="java.lang.String"
+		resultType="TICKET_DATA">
+	<![CDATA[
+		SELECT TICKET_DATA.*, HT_USERS_DATA.USERS_NAME, TICKET_USERDATE.TICKET_STATE
+		FROM TICKET_DATA
+		LEFT JOIN MEMBER ON TICKET_DATA.TICKET_ID = MEMBER.TICKET_ID
+		LEFT JOIN HT_USERS_DATA ON MEMBER.USERS_ID = HT_USERS_DATA.USERS_ID
+		LEFT JOIN TICKET_USERDATE ON TICKET_DATA.TICKET_ID = TICKET_USERDATE.TICKET_ID AND MEMBER.USERS_ID = TICKET_USERDATE.USERS_ID
+		WHERE TICKET_DATA.TICKET_START >= DATE ${TICKET_START}
+		AND TICKET_DATA.TICKET_END <= DATE ${TICKET_END}
+		]]>
+	</select>
+</mapper>
+

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config
+3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<typeAliases>
+		<typeAlias alias="Biz"
+			type="com.example.S20230501.Model.Biz" />
+		<typeAlias alias="HT_USERS_DATA"
+			type="com.example.S20230501.Model.HT_USERS_DATA" />
+		<typeAlias alias="TICKET_DATA"
+			type="com.example.S20230501.Model.TICKET_DATA" />
+	</typeAliases>
+</configuration>
