@@ -9,6 +9,8 @@
 			type="com.example.S20230501.Model.Biz" />
 		<typeAlias alias="HT_USERS_DATA"
 			type="com.example.S20230501.Model.HT_USERS_DATA" />
+		<typeAlias alias="HT_USERS_DATA_ljy"
+				   type="com.example.S20230501.Model.HT_USERS_DATA_ljy" />
 		<typeAlias alias="TICKET_DATA"
 			type="com.example.S20230501.Model.TICKET_DATA" />
 	</typeAliases>

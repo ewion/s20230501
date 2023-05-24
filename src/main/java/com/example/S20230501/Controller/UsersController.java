@@ -40,7 +40,7 @@ public class UsersController {
 		users_DATA.setStart(page.getStart()); // 시작시 1
 		users_DATA.setEnd(page.getEnd());     // 시작시 10
 		List<HT_USERS_DATA> users = usersServic.users_DATA(users_DATA);
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-dd-MM");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		List<String> formattedUserBirthList = new ArrayList<>();
 		List<String> formattedUserStartList = new ArrayList<>();
 		List<String> formattedUserEndList = new ArrayList<>();
@@ -71,17 +71,6 @@ public class UsersController {
 		response.put("formattedUserEndList", formattedUserEndList);
 		response.put("userTotal", userTotal);
 
-		/*
-		 * response.put("userTotal", userTotal); response.put("page", page);
-		 */
-		/*
-		 * model.addAttribute("users", users);
-		 * model.addAttribute("formattedUserBirthList", formattedUserBirthList);
-		 * model.addAttribute("formattedUserStartList", formattedUserStartList);
-		 * model.addAttribute("formattedUserEndList", formattedUserEndList);
-		 */
-		System.out.println("response"+response);
-		System.out.println("users"+users);
 		return response;
 	}
 
@@ -93,7 +82,7 @@ public class UsersController {
 		users_DATA.setStart(page.getStart()); // 시작시 1
 		users_DATA.setEnd(page.getEnd());     // 시작시 10
 		List<HT_USERS_DATA> trainer = usersServic.trainer(users_DATA);
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-dd-MM");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 		List<String> formattedTrainerBirthList = new ArrayList<>();
 		List<String> formattedTrainerStartList = new ArrayList<>();
@@ -144,7 +133,7 @@ public class UsersController {
 		System.out.println(users_DATA.getKeyword());
 		System.out.println(users_DATA.getSearch());
 		List<HT_USERS_DATA> userssearch=usersServic.userssearch(users_DATA);
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-dd-MM");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		List<String> formattedUserBirthList = new ArrayList<>();
 		List<String> formattedUserStartList = new ArrayList<>();
 		List<String> formattedUserEndList = new ArrayList<>();
@@ -188,7 +177,7 @@ public class UsersController {
 		List<HT_USERS_DATA> trainer = usersServic.trainerSearch(users_DATA);
 		
 		
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-dd-MM");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		List<String> formattedTrainerBirthList = new ArrayList<>();
 		List<String> formattedTrainerStartList = new ArrayList<>();
 		List<String> formattedTrainerEndList = new ArrayList<>();
@@ -197,17 +186,12 @@ public class UsersController {
 			Date trainerBirth = trainerData.getUSERS_BIRTH();
 			Date trainerStart = trainerData.getUSERS_START();
 			Date trainerEnd = trainerData.getUSERS_END();
-
-
-
 			if (trainerEnd == null) {
 				formattedTrainerEndList.add("");
 			}else {
 				String formattedEnd = dateFormat.format(trainerEnd);
 				formattedTrainerEndList.add(formattedEnd);
 			}
-
-
 			if (trainerBirth != null) {
 				String formattedTrainerBirth = dateFormat.format(trainerBirth);
 				String formattedTrainerStart = dateFormat.format(trainerStart);
@@ -225,5 +209,18 @@ public class UsersController {
 		response.put("trainerTotal", trainerTotal);
 
 		return response;
+	}
+	@ResponseBody
+	@GetMapping("editForm")
+	public int editForm(HT_USERS_DATA data) {
+	    if (data.getUSERS_STATE() == 601) {
+	        data.setUSERS_END(null);
+	    } else {
+	        data.setUSERS_END(new Date());
+	    }
+	    System.out.println("data==>" + data.getUSERS_END());
+	    int editForm = usersServic.editForm(data);
+
+	    return editForm;
 	}
 }

@@ -10,100 +10,167 @@
 <title>관리자 페이지</title>
 </head>
 <body style="background: rgb(52, 73, 94);">
-	<table class="table table-dark table-hover" style="max-width: 1200px;">
-		<div style="max-width: 500px;">
-			<div class="row g-3">
-				<div class="col-sm-6">
-					<label for="firstName" class="form-label">회원 이름</label> <input
-						type="text" class="form-control" id="firstName" placeholder=""
-						value="" required>
-					<div class="invalid-feedback"></div>
-				</div>
-				<div class="col-sm-6">
-					<label for="lastName" class="form-label">회원 아이디</label> <input
-						type="text" class="form-control" id="lastName" placeholder=""
-						value="" required>
-					<div class="invalid-feedback"></div>
-				</div>
+	<div id="userModalContainer">
+		<div class="modal fade" id="myModal" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">회원 정보 수정</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div style="max-width: 500px;">
+							<div class="row g-3">
+								<div class="col-sm-6">
+									<label for="firstName" class="form-label">회원 이름</label> <input
+										type="text" class="form-control" id="firstName" placeholder=""
+										value="" required>
+									<div class="invalid-feedback"></div>
+								</div>
+								<div class="col-sm-6">
+									<label for="lastName" class="form-label">회원 아이디</label> <input
+										type="text" class="form-control" id="lastName" placeholder=""
+										value="" required>
+									<div class="invalid-feedback"></div>
+								</div>
 
-				<div class="col-12">
-					<label for="password" class="form-label">비밀번호 변경 <span
-						class="text-body-secondary"></span></label> <input type="password"
-						class="form-control" id="password" placeholder="비밀번호입력">
-					<div class="invalid-feedback">Please enter a valid email
-						address for shipping updates.</div>
-				</div>
-				<div class="col-12">
-					<label for="passwordConfirm" class="form-label">비밀번호 확인 <span
-						class="text-body-secondary"></span></label> <input type="password"
-						class="form-control" id="passwordConfirm" placeholder="비밀번호 확인">
-					<div class="invalid-feedback">Please enter a valid email
-						address for shipping updates.</div>
-				</div>
+<div class="col-12">
+  <label for="password" class="form-label">비밀번호 변경</label>
+  <input type="password" class="form-control" id="password" placeholder="비밀번호 입력" required>
+  <div class="invalid-feedback" id="passwordError">비밀번호를 입력해주세요.</div>
+</div>
+<div class="col-12">
+  <label for="passwordConfirm" class="form-label">비밀번호 확인</label>
+  <input type="password" class="form-control" id="passwordConfirm" placeholder="비밀번호 확인" required>
+  <div class="invalid-feedback">비밀번호가 일치하지 않습니다.</div>
+</div>
 
-				<div class="col-12">
-					<label for="address" class="form-label">주소</label> <input
-						type="text" class="form-control" id="address" placeholder=""
-						required>
-					<div class="invalid-feedback"></div>
-				</div>
-				<div class="col-6">
-					<label for="birthDate" class="form-label">주민번호 앞자리</label> <input
-						type="text" class="form-control" id="birthDate"
-						placeholder="6자리입력" minlength="6" maxlength="6" required>
-					<div class="invalid-feedback"></div>
-				</div>
-				<div class="col-6">
-					<label for="idNumber" class="form-label">주민번호 뒷자리</label> <input
-						type="text" class="form-control" id="idNumber"
-						placeholder="앞번호 만 입력" minlength="1" maxlength="1" required>
-					<div class="invalid-feedback"></div>
-				</div>
-				<div class="col-12">
-					<label for="phone" class="form-label">휴대전화 <span
-						class="text-body-secondary"></span></label> <input type="text"
-						class="form-control" id="phone" placeholder="">
-				</div>
-				<div class="col-md-5">
-					<label for="status" class="form-label">상태코드</label> <select
-						class="form-select" id="status" required>
-						<option value="601">활동중</option>
-						<option value="602">휴면</option>
-						<option value="603">정지</option>
-						<option value="604">탈퇴</option>
-					</select>
-					<div class="invalid-feedback"></div>
-				</div>
-				<div class="col-md-3">
-					<label for="height" class="form-label">키</label> <input type="text"
-						class="form-control" id="height" placeholder="" required>
-					<div class="invalid-feedback">Zip code required.</div>
-				</div>
-				<div class="col-md-3">
-					<label for="weight" class="form-label">몸무게</label> <input
-						type="text" class="form-control" id="weight" placeholder=""
-						required>
-					<div class="invalid-feedback">Zip code required.</div>
-				</div>
+								<div class="col-12">
+									<label for="address" class="form-label">주소</label> <input
+										type="text" class="form-control" id="address" placeholder=""
+										required>
+									<div class="invalid-feedback"></div>
+								</div>
+								<div class="col-6">
+									<label for="birthDate" class="form-label">생년월일</label> <input
+										type="text" class="form-control" id="birthDate"
+										placeholder="19**-01-01" minlength="10" maxlength="10"
+										required>
+									<div class="invalid-feedback"></div>
+								</div>
+								<div class="col-6">
+									<label for="gender" class="form-label">성별</label> <select
+										class="form-select" id="gender" required>
+										<option value="" disabled selected>선택</option>
+										<option value="701">남자</option>
+										<option value="702">여자</option>
+									</select>
+									<div class="invalid-feedback"></div>
+								</div>
+								<div class="col-12">
+									<label for="phone" class="form-label">휴대전화 <span
+										class="text-body-secondary"></span></label> <input type="text"
+										class="form-control" id="phone" placeholder="">
+								</div>
+								<div class="col-md-5">
+									<label for="status" class="form-label">상태코드</label> <select
+										class="form-select" id="status" required>
+										<option value="601">활동중</option>
+										<option value="602">탈퇴</option>
+										<option value="603">휴면</option>
+										<option value="604">정지</option>
+									</select>
+									<div class="invalid-feedback"></div>
+								</div>
+								<div class="col-md-3">
+									<label for="height" class="form-label">키</label> <input
+										type="text" class="form-control" id="height" placeholder=""
+										required>
+									<div class="invalid-feedback">키를 입력해주세요.</div>
+								</div>
+								<div class="col-md-3">
+									<label for="weight" class="form-label">몸무게</label> <input
+										type="text" class="form-control" id="weight" placeholder=""
+										required>
+									<div class="invalid-feedback">몸무게를 입력해주세요.</div>
+								</div>
 
-				<div class="col-12 mt-3">
-					<button type="button" class="btn btn-primary" onclick="editForm()">수정</button>
-					<button type="button" class="btn btn-danger" onclick="deleteForm()">삭제</button>
+								<div class="col-12 mt-3">
+									<button type="button" class="btn btn-primary"
+										onclick="editForm()">수정</button>
+									<button type="button" class="btn btn-danger"
+										onclick="deleteForm()">삭제</button>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
+	</div>
+	
+	<script type="text/javascript">
+	function editForm() {
+		  var password = $('#password').val();
+		  var passwordConfirm = $('#passwordConfirm').val();
 
-		<script>
-  function editForm() {
-    // TODO: Implement your edit logic here
-    console.log("Edit button clicked");
-  }
+		  if (password !== passwordConfirm) {
+		    $('#passwordConfirm').addClass('is-invalid');
+		    $('.invalid-feedback').text('비밀번호가 일치하지 않습니다.');
+		    showAlert('비밀번호가 일치하지 않습니다.');
+		    return;
+		  } else {
+		    $('#passwordConfirm').removeClass('is-invalid');
+		    $('.invalid-feedback').text('');
+		    showAlert('성공했습니다');
+		  }
 
-  function deleteForm() {
-    // TODO: Implement your delete logic here
-    console.log("Delete button clicked");
-  }
-</script>
+		  var firstName = document.getElementById("firstName").value;
+		  var lastName = document.getElementById("lastName").value;
+		  var address = document.getElementById("address").value;
+		  var birthDate = document.getElementById("birthDate").value;
+		  var formattedBirthDate = birthDate.split('-').join('/');
+		  var gender = document.getElementById("gender").value;
+		  var height = document.getElementById("height").value;
+		  var weight = document.getElementById("weight").value;
+		  var phone = document.getElementById("phone").value;
+		  var status = document.getElementById("status").value;
+		  var password = document.getElementById("password").value;
+		  
+		  $.ajax({
+		    url: '/editForm',
+		    method: 'GET',
+		    data: {
+		      USERS_PASS: password,
+		      USERS_PHONE: phone,
+		      USERS_ADDR: address,
+		      USERS_STATE: status,
+		      USERS_BIRTH: formattedBirthDate,
+		      USERS_HEIGHT: height,
+		      USERS_WEIGHT: weight,
+		      USERS_NAME: firstName,
+		      USERS_ID: lastName,
+		      USERS_GENDER: gender
+		    },
+		    success: function(response) {
+		      console.log('응답 데이터 성공했습니다', response);
+		      // Close the modal
+		      $('#myModal').modal('hide');
+		      location.reload();
+		    },
+		    error: function(xhr, status, error) {
+		      console.log('에러:', error);
+		    }
+		  });
+		}
+
+		function showAlert(message) {
+		  alert(message);
+		}
+	</script>
+	<table class="table table-dark table-hover" style="max-width: 1200px;">
 		<br>
 		<a style="color: rgb(22, 160, 133);">일반회원</a>
 		<div class="d-flex align-items-center">
@@ -125,13 +192,13 @@
 			<th scope="col">아이디</th>
 			<th scope="col">이름</th>
 			<th scope="col">생년월일</th>
-			<th scope="col">키</th>
 			<th scope="col">성별</th>
+			<th scope="col">키</th>
 			<th scope="col">몸무게</th>
 			<th scope="col">연락처</th>
 			<th scope="col">거주지</th>
 			<th scope="col">가입일</th>
-			<th scope="col">탈퇴일</th>
+			<th scope="col">상태 변경일</th>
 			<th scope="col">가입상태</th>
 		</tr>
 		</thead>
@@ -161,13 +228,13 @@
 			<th scope="col">아이디</th>
 			<th scope="col">이름</th>
 			<th scope="col">생년월일</th>
-			<th scope="col">키</th>
 			<th scope="col">성별</th>
+			<th scope="col">키</th>
 			<th scope="col">몸무게</th>
 			<th scope="col">연락처</th>
 			<th scope="col">거주지</th>
 			<th scope="col">가입일</th>
-			<th scope="col">탈퇴일</th>
+			<th scope="col">상태 변경일</th>
 			<th scope="col">가입상태</th>
 		</tr>
 		</thead>
@@ -175,6 +242,7 @@
 		</tbody>
 	</table>
 	<div id="trainerPage"></div>
+
 </body>
 </html>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -198,36 +266,42 @@ function loadUsers() {
 	      var formattedUserEndList = response.formattedUserEndList;
 
 	      $.each(users, function(index, user) {
-	        var row = '<tr style="font-size: 15px;">' +
-	          '<th scope="row">' + (index + 1) + '</th>' +
-	          '<td>' + user.users_ID + '</td>' +
-	          '<td>' + user.users_NAME + '</td>' +
-	          '<td>' + formattedUserBirthList[index] + '</td>' +
-	          '<td>' + user.users_HEIGHT + '</td>' +
-	          '<td>' + user.users_WEIGHT + '</td>' +
-	          '<td>' + user.users_PHONE + '</td>' +
-	          '<td>' + user.users_ADDR + '</td>' +
-	          '<td>' + formattedUserStartList[index] + '</td>' +
-	          '<td>' + formattedUserEndList[index] + '</td>';
+	        var row = $('<tr style="font-size: 15px;"></tr>');
 
-	        if (user.users_STATE === 602) {
-	          row += '<td>탈퇴</td>';
-	        } else if (user.users_STATE === 603) {
-	          row += '<td>휴면</td>';
-	        } else if (user.users_STATE === 604) {
-	          row += '<td>정지</td>';
-	        } else {
-	          row += '<td>활동중</td>';
-	        }
+	        var indexCell = $('<th scope="row">' + (index + 1) + '</th>');
+	        var userIdCell = $('<td>' + user.users_ID + '</td>');
+	        var userNameCell = $('<td>' + user.users_NAME + '</td>');
+	        var userBirthCell = $('<td>' + formattedUserBirthList[index] + '</td>');
+	        var userGenderCell = $('<td>' + (user.users_GENDER == 701 ? '남자' : '여자') + '</td>');
+	        var userHeightCell = $('<td>' + user.users_HEIGHT + '</td>');
+	        var userWeightCell = $('<td>' + user.users_WEIGHT + '</td>');
+	        var userPhoneCell = $('<td>' + user.users_PHONE + '</td>');
+	        var userAddressCell = $('<td>' + user.users_ADDR + '</td>');
+	        var userStartCell = $('<td>' + formattedUserStartList[index] + '</td>');
+	        var userEndCell = $('<td>' + formattedUserEndList[index] + '</td>');
+	        var userStateCell = $('<td></td>').text(getUserState(user.users_STATE));
 
-	        row += '</tr>';
+	        row.append(indexCell, userIdCell, userNameCell, userBirthCell, userGenderCell, userHeightCell, userWeightCell, userPhoneCell, userAddressCell, userStartCell, userEndCell, userStateCell);
 	        tableBody.append(row);
 
-	        // 모달 창 표시 이벤트 핸들러
-	        $(row).click(function() {
-	          // 모달 창을 표시하는 코드 작성
-	          // 예를 들어, 모달 창의 내용을 사용자 정보로 채우는 등의 작업을 수행할 수 있습니다.
-	          console.log("Modal opened for user:", user.users_NAME);
+	        // Add click event handler to the row
+	        row.click(function() {
+	        	
+	          // Show the modal
+	          $('#myModal').modal('show');
+              console.log("됩니까??");
+	          // Populate the form fields with user data
+	          $('#firstName').val(user.users_NAME);
+	          $('#lastName').val(user.users_ID);
+	          $('#address').val(user.users_ADDR);
+	          $('#birthDate').val(formattedUserBirthList[index]);
+	          $('#gender').val(user.users_GENDER == 701 ? '701' : '702');
+	          $('#height').val(user.users_HEIGHT);
+	          $('#weight').val(user.users_WEIGHT);
+	          $('#phone').val(user.users_PHONE);
+	          $('#status').val(user.users_STATE);
+	          $('#password').val(user.users_PASS);
+	          $('#passwordConfirm').val(user.users_PASS);
 	        });
 	      });
 	    },
@@ -237,53 +311,89 @@ function loadUsers() {
 	  });
 	}
 
-function loadtrainer() {
-	  $.ajax({
-	    url: '/trainer',
-	    method: 'GET',
-	    dataType: 'json',
-	    success: function(response) {
-	      var tableBody = $('#trainerTableBody');
-	      tableBody.empty();
-
-	      var trainer = response.trainer;
-	      var formattedTrainerBirthList = response.formattedTrainerBirthList;
-	      var formattedTrainerStartList = response.formattedTrainerStartList;
-	      var formattedTrainerEndList = response.formattedTrainerEndList;
-
-	      $.each(trainer, function(index, trainers) {
-	        var row = '<tr style="font-size: 15px;">' +
-	          '<th scope="row">' + (index + 1) + '</th>' +
-	          '<td>' + trainers.users_ID + '</td>' +
-	          '<td>' + trainers.users_NAME + '</td>' +
-	          '<td>' + formattedTrainerBirthList[index] + '</td>' +
-	          '<td>' + trainers.users_HEIGHT + '</td>' +
-	          '<td>' + trainers.users_WEIGHT + '</td>' +
-	          '<td>' + trainers.users_PHONE + '</td>' +
-	          '<td>' + trainers.users_ADDR + '</td>' +
-	          '<td>' + formattedTrainerStartList[index] + '</td>' +
-	          '<td>' + formattedTrainerEndList[index] + '</td>';
-
-	        if (trainers.users_STATE === 602) {
-	          row += '<td>탈퇴</td>';
-	        } else if (trainers.users_STATE === 603) {
-	          row += '<td>휴면</td>';
-	        } else if (trainers.users_STATE === 604) {
-	          row += '<td>정지</td>';
-	        } else {
-	          row += '<td>활동중</td>';
-	        }
-
-	        row += '</tr>';
-
-	        tableBody.append(row);
-	      });
-	    },
-	    error: function(xhr, status, error) {
-	      console.log('Error:', error);
-	    }
-	  });
+	function getUserState(stateCode) {
+	  switch (stateCode) {
+	    case 602:
+	      return '탈퇴';
+	    case 603:
+	      return '휴면';
+	    case 604:
+	      return '정지';
+	    default:
+	      return '활동중';
+	  }
 	}
+	function loadtrainer() {
+		  $.ajax({
+		    url: '/trainer',
+		    method: 'GET',
+		    dataType: 'json',
+		    success: function(response) {
+		      var tableBody = $('#trainerTableBody');
+		      tableBody.empty();
+
+		      var trainer = response.trainer;
+		      var formattedTrainerBirthList = response.formattedTrainerBirthList;
+		      var formattedTrainerStartList = response.formattedTrainerStartList;
+		      var formattedTrainerEndList = response.formattedTrainerEndList;
+
+		      $.each(trainer, function(index, trainer) {
+		        var row = $('<tr style="font-size: 15px;"></tr>');
+
+		        var indexCell = $('<th scope="row">' + (index + 1) + '</th>');
+		        var userIdCell = $('<td>' + trainer.users_ID + '</td>');
+		        var userNameCell = $('<td>' + trainer.users_NAME + '</td>');
+		        var userBirthCell = $('<td>' + formattedTrainerBirthList[index] + '</td>');
+		        var userGenderCell = $('<td>' + (trainer.users_GENDER == 701 ? '남자' : '여자') + '</td>');
+		        var userHeightCell = $('<td>' + trainer.users_HEIGHT + '</td>');
+		        var userWeightCell = $('<td>' + trainer.users_WEIGHT + '</td>');
+		        var userPhoneCell = $('<td>' + trainer.users_PHONE + '</td>');
+		        var userAddressCell = $('<td>' + trainer.users_ADDR + '</td>');
+		        var userStartCell = $('<td>' + formattedTrainerStartList[index] + '</td>');
+		        var userEndCell = $('<td>' + formattedTrainerEndList[index] + '</td>');
+		        var userStateCell = $('<td></td>').text(getUserState(trainer.users_STATE));
+
+		        row.append(indexCell, userIdCell, userNameCell, userBirthCell, userGenderCell, userHeightCell, userWeightCell, userPhoneCell, userAddressCell, userStartCell, userEndCell, userStateCell);
+		        tableBody.append(row);
+
+		        // Add click event handler to the row
+		        row.click(function() {
+		          // Show the modal
+		          $('#myModal').modal('show');
+		          console.log("됩니까??");
+
+		          // Populate the form fields with user data
+		          $('#firstName').val(trainer.users_NAME);
+		          $('#lastName').val(trainer.users_ID);
+		          $('#address').val(trainer.users_ADDR);
+		          $('#birthDate').val(formattedTrainerBirthList[index]);
+		          $('#gender').val(trainer.users_GENDER == 701 ? '701' : '702');
+		          $('#height').val(trainer.users_HEIGHT);
+		          $('#weight').val(trainer.users_WEIGHT);
+		          $('#phone').val(trainer.users_PHONE);
+		          $('#status').val(trainer.users_STATE);
+		          $('#password').val(trainer.users_PASS);
+		          $('#passwordConfirm').val(trainer.users_PASS);
+		        });
+		      });
+		    },
+		    error: function(xhr, status, error) {
+		      console.log('Error:', error);
+		    }
+		  });
+		}
+		function getUserState(stateCode) {
+		  switch (stateCode) {
+		    case 602:
+		      return '탈퇴';
+		    case 603:
+		      return '휴면';
+		    case 604:
+		      return '정지';
+		    default:
+		      return '활동중';
+		  }
+		}
 function search1() {
 	var keyword = document.getElementById("keyword").value;
 	var search = document.getElementById("search").value;
@@ -297,6 +407,7 @@ function search1() {
 	      },
 	    success: function(response) {
 	    	
+		        pageLoad3();
 	      var tableBody = $('#userTableBody');
 	      tableBody.empty();
 	      var users = response.users;
@@ -304,39 +415,63 @@ function search1() {
 	      var formattedUserStartList = response.formattedUserStartList;
 	      var formattedUserEndList = response.formattedUserEndList;
 	      $.each(users, function(index, user) {
-	    	  console.log(user)
-	        var row = '<tr style="font-size: 15px;">' +
-	          '<th scope="row">' + (index + 1) + '</th>' +
-	          '<td>' + user.users_ID + '</td>' +
-	          '<td>' + user.users_NAME + '</td>' +
-	          '<td>' + formattedUserBirthList[index] + '</td>' +
-	          '<td>' + user.users_HEIGHT + '</td>' +
-	          '<td>' + user.users_WEIGHT + '</td>' +
-	          '<td>' + user.users_PHONE + '</td>' +
-	          '<td>' + user.users_ADDR + '</td>' +
-	          '<td>' + formattedUserStartList[index] + '</td>' +
-	          '<td>' + formattedUserEndList[index] + '</td>';
+	    	  var row = $('<tr style="font-size: 15px;"></tr>');
 
-	        if (user.users_STATE === 602) {
-	          row += '<td>탈퇴</td>';
-	        } else if (user.users_STATE === 603) {
-	          row += '<td>휴면</td>';
-	        } else if (user.users_STATE === 604) {
-	          row += '<td>정지</td>';
-	        } else {
-	          row += '<td>활동중</td>';
-	        }
+		        var indexCell = $('<th scope="row">' + (index + 1) + '</th>');
+		        var userIdCell = $('<td>' + user.users_ID + '</td>');
+		        var userNameCell = $('<td>' + user.users_NAME + '</td>');
+		        var userBirthCell = $('<td>' + formattedUserBirthList[index] + '</td>');
+		        var userGenderCell = $('<td>' + (user.users_GENDER == 701 ? '남자' : '여자') + '</td>');
+		        var userHeightCell = $('<td>' + user.users_HEIGHT + '</td>');
+		        var userWeightCell = $('<td>' + user.users_WEIGHT + '</td>');
+		        var userPhoneCell = $('<td>' + user.users_PHONE + '</td>');
+		        var userAddressCell = $('<td>' + user.users_ADDR + '</td>');
+		        var userStartCell = $('<td>' + formattedUserStartList[index] + '</td>');
+		        var userEndCell = $('<td>' + formattedUserEndList[index] + '</td>');
+		        var userStateCell = $('<td></td>').text(getUserState(user.users_STATE));
 
-	        row += '</tr>';
-	        tableBody.append(row);
-	        pageLoad3();
-	      });
-	    },
-	    error: function(xhr, status, error) {
-	      console.log('Error:', error);
-	    }
-	  });
-	}
+		        row.append(indexCell, userIdCell, userNameCell, userBirthCell, userGenderCell, userHeightCell, userWeightCell, userPhoneCell, userAddressCell, userStartCell, userEndCell, userStateCell);
+		        tableBody.append(row);
+
+		        // Add click event handler to the row
+		        row.click(function() {
+		        	
+		          // Show the modal
+		          $('#myModal').modal('show');
+	              console.log("됩니까??");
+		          // Populate the form fields with user data
+		          $('#firstName').val(user.users_NAME);
+		          $('#lastName').val(user.users_ID);
+		          $('#address').val(user.users_ADDR);
+		          $('#birthDate').val(formattedUserBirthList[index]);
+		          $('#gender').val(user.users_GENDER == 701 ? '701' : '702');
+		          $('#height').val(user.users_HEIGHT);
+		          $('#weight').val(user.users_WEIGHT);
+		          $('#phone').val(user.users_PHONE);
+		          $('#status').val(user.users_STATE);
+		          $('#password').val(user.users_PASS);
+		          $('#passwordConfirm').val(user.users_PASS);
+		        });
+		      });
+		    },
+		    error: function(xhr, status, error) {
+		      console.log('Error:', error);
+		    }
+		  });
+		}
+
+		function getUserState(stateCode) {
+		  switch (stateCode) {
+		    case 602:
+		      return '탈퇴';
+		    case 603:
+		      return '휴면';
+		    case 604:
+		      return '정지';
+		    default:
+		      return '활동중';
+		  }
+		}
 function pageLoad() {
 	  $.ajax({
 	    url: '/loadUsers',
@@ -390,11 +525,10 @@ function pageLoad() {
 function clickPage(pageNumber) {
 	  var keyword = document.getElementById("keyword").value;
 	  var search = document.getElementById("search").value;
-	  // 페이지 번호에 해당하는 데이터를 가져와서 표시하거나 처리하는 로직을 작성해주세요.
-	  // 예: Ajax를 사용하여 서버로부터 해당 페이지의 데이터를 가져와서 표시
+     
 	  $.ajax({
-	    url: '/userssearch', // 예시 URL, 실제 서버 URL로 수정 필요
-	    method: 'GET', // 예시 메소드, 실제 요청 메소드로 수정 필요
+	    url: '/userssearch',
+	    method: 'GET',
 	    data: {
 	      currentPage: pageNumber,
 	      keyword: keyword,
@@ -408,61 +542,63 @@ function clickPage(pageNumber) {
 	      var formattedUserStartList = response.formattedUserStartList;
 	      var formattedUserEndList = response.formattedUserEndList;
 	      $.each(users, function(index, user) {
-	        console.log(user);
-	        var row =
-	          '<tr style="font-size: 15px;">' +
-	          '<th scope="row">' +
-	          (index + 1) +
-	          '</th>' +
-	          '<td>' +
-	          user.users_ID +
-	          '</td>' +
-	          '<td>' +
-	          user.users_NAME +
-	          '</td>' +
-	          '<td>' +
-	          formattedUserBirthList[index] +
-	          '</td>' +
-	          '<td>' +
-	          user.users_HEIGHT +
-	          '</td>' +
-	          '<td>' +
-	          user.users_WEIGHT +
-	          '</td>' +
-	          '<td>' +
-	          user.users_PHONE +
-	          '</td>' +
-	          '<td>' +
-	          user.users_ADDR +
-	          '</td>' +
-	          '<td>' +
-	          formattedUserStartList[index] +
-	          '</td>' +
-	          '<td>' +
-	          formattedUserEndList[index] +
-	          '</td>';
+	    	  var row = $('<tr style="font-size: 15px;"></tr>');
 
-	        if (user.users_STATE === 602) {
-	          row += '<td>탈퇴</td>';
-	        } else if (user.users_STATE === 603) {
-	          row += '<td>휴면</td>';
-	        } else if (user.users_STATE === 604) {
-	          row += '<td>정지</td>';
-	        } else {
-	          row += '<td>활동중</td>';
-	        }
+		        var indexCell = $('<th scope="row">' + (index + 1) + '</th>');
+		        var userIdCell = $('<td>' + user.users_ID + '</td>');
+		        var userNameCell = $('<td>' + user.users_NAME + '</td>');
+		        var userBirthCell = $('<td>' + formattedUserBirthList[index] + '</td>');
+		        var userGenderCell = $('<td>' + (user.users_GENDER == 701 ? '남자' : '여자') + '</td>');
+		        var userHeightCell = $('<td>' + user.users_HEIGHT + '</td>');
+		        var userWeightCell = $('<td>' + user.users_WEIGHT + '</td>');
+		        var userPhoneCell = $('<td>' + user.users_PHONE + '</td>');
+		        var userAddressCell = $('<td>' + user.users_ADDR + '</td>');
+		        var userStartCell = $('<td>' + formattedUserStartList[index] + '</td>');
+		        var userEndCell = $('<td>' + formattedUserEndList[index] + '</td>');
+		        var userStateCell = $('<td></td>').text(getUserState(user.users_STATE));
 
-	        row += '</tr>';
+		        row.append(indexCell, userIdCell, userNameCell, userBirthCell, userGenderCell, userHeightCell, userWeightCell, userPhoneCell, userAddressCell, userStartCell, userEndCell, userStateCell);
+		        tableBody.append(row);
 
-	        tableBody.append(row);
-	      });
-	    },
-	    error: function(xhr, status, error) {
-	      console.log('Error:', error);
-	    }
-	  });
-	}
-	
+		        // Add click event handler to the row
+		        row.click(function() {
+		        	
+		          // Show the modal
+		          $('#myModal').modal('show');
+	              console.log("됩니까??");
+		          // Populate the form fields with user data
+		          $('#firstName').val(user.users_NAME);
+		          $('#lastName').val(user.users_ID);
+		          $('#address').val(user.users_ADDR);
+		          $('#birthDate').val(formattedUserBirthList[index]);
+		          $('#gender').val(user.users_GENDER == 701 ? '701' : '702');
+		          $('#height').val(user.users_HEIGHT);
+		          $('#weight').val(user.users_WEIGHT);
+		          $('#phone').val(user.users_PHONE);
+		          $('#status').val(user.users_STATE);
+		          $('#password').val(user.users_PASS);
+		          $('#passwordConfirm').val(user.users_PASS);
+		        });
+		      });
+		    },
+		    error: function(xhr, status, error) {
+		      console.log('Error:', error);
+		    }
+		  });
+		}
+
+		function getUserState(stateCode) {
+		  switch (stateCode) {
+		    case 602:
+		      return '탈퇴';
+		    case 603:
+		      return '휴면';
+		    case 604:
+		      return '정지';
+		    default:
+		      return '활동중';
+		  }
+		}
 function pageLoad2() {
 	  $.ajax({
 	    url: '/trainer',
@@ -514,59 +650,83 @@ function pageLoad2() {
 	  });
 	}
 function search2() {
-	var keyword = document.getElementById("keyword2").value;
-	var search = document.getElementById("search2").value;
+	  var keyword = document.getElementById("keyword2").value;
+	  var search = document.getElementById("search2").value;
 	  $.ajax({
 	    url: '/trainerssearch',
 	    method: 'GET',
 	    dataType: 'json',
 	    data: {
-	        keyword: keyword,
-	        search: search
-	        },
-	  	    success: function(response) {
-	  	      var tableBody = $('#trainerTableBody');
-	  	      tableBody.empty();
+	      keyword: keyword,
+	      search: search
+	    },
+	    success: function(response) {
+	      var tableBody = $('#trainerTableBody');
+	      tableBody.empty();
 
-	  	      var trainer = response.trainer;
-	  	      var formattedTrainerBirthList = response.formattedTrainerBirthList;
-	  	      var formattedTrainerStartList = response.formattedTrainerStartList;
-	  	      var formattedTrainerEndList = response.formattedTrainerEndList;
+	      var trainer = response.trainer;
+	      var formattedTrainerBirthList = response.formattedTrainerBirthList;
+	      var formattedTrainerStartList = response.formattedTrainerStartList;
+	      var formattedTrainerEndList = response.formattedTrainerEndList;
 
-	  	      $.each(trainer, function(index, trainers) {
-	  	        var row = '<tr style="font-size: 15px;">' +
-	  	          '<th scope="row">' + (index + 1) + '</th>' +
-	  	          '<td>' + trainers.users_ID + '</td>' +
-	  	          '<td>' + trainers.users_NAME + '</td>' +
-	  	          '<td>' + formattedTrainerBirthList[index] + '</td>' +
-	  	          '<td>' + trainers.users_HEIGHT + '</td>' +
-	  	          '<td>' + trainers.users_WEIGHT + '</td>' +
-	  	          '<td>' + trainers.users_PHONE + '</td>' +
-	  	          '<td>' + trainers.users_ADDR + '</td>' +
-	  	          '<td>' + formattedTrainerStartList[index] + '</td>' +
-	  	          '<td>' + formattedTrainerEndList[index] + '</td>';
+	      $.each(trainer, function(index, trainer) {
+	        var row = $('<tr style="font-size: 15px;"></tr>');
 
-	  	        if (trainers.users_STATE === 602) {
-	  	          row += '<td>탈퇴</td>';
-	  	        } else if (trainers.users_STATE === 603) {
-	  	          row += '<td>휴면</td>';
-	  	        } else if (trainers.users_STATE === 604) {
-	  	          row += '<td>정지</td>';
-	  	        } else {
-	  	          row += '<td>활동중</td>';
-	  	        }
+	        var indexCell = $('<th scope="row">' + (index + 1) + '</th>');
+	        var userIdCell = $('<td>' + trainer.users_ID + '</td>');
+	        var userNameCell = $('<td>' + trainer.users_NAME + '</td>');
+	        var userBirthCell = $('<td>' + formattedTrainerBirthList[index] + '</td>');
+	        var userGenderCell = $('<td>' + (trainer.users_GENDER == 701 ? '남자' : '여자') + '</td>');
+	        var userHeightCell = $('<td>' + trainer.users_HEIGHT + '</td>');
+	        var userWeightCell = $('<td>' + trainer.users_WEIGHT + '</td>');
+	        var userPhoneCell = $('<td>' + trainer.users_PHONE + '</td>');
+	        var userAddressCell = $('<td>' + trainer.users_ADDR + '</td>');
+	        var userStartCell = $('<td>' + formattedTrainerStartList[index] + '</td>');
+	        var userEndCell = $('<td>' + formattedTrainerEndList[index] + '</td>');
+	        var userStateCell = $('<td></td>').text(getUserState(trainer.users_STATE));
 
-	  	        row += '</tr>';
+	        row.append(indexCell, userIdCell, userNameCell, userBirthCell, userGenderCell, userHeightCell, userWeightCell, userPhoneCell, userAddressCell, userStartCell, userEndCell, userStateCell);
+	        tableBody.append(row);
 
-	  	        tableBody.append(row);
-	  	      trainerpageLoad2();
-	  	      });
-	  	    },
-	  	    error: function(xhr, status, error) {
-	  	      console.log('Error:', error);
-	  	    }
-	  	  });
-	  	}
+	        // Add click event handler to the row
+	        row.click(function() {
+	          // Show the modal
+	          $('#myModal').modal('show');
+	          console.log("됩니까??");
+
+	          // Populate the form fields with user data
+	          $('#firstName').val(trainer.users_NAME);
+	          $('#lastName').val(trainer.users_ID);
+	          $('#address').val(trainer.users_ADDR);
+	          $('#birthDate').val(formattedTrainerBirthList[index]);
+	          $('#gender').val(trainer.users_GENDER == 701 ? '701' : '702');
+	          $('#height').val(trainer.users_HEIGHT);
+	          $('#weight').val(trainer.users_WEIGHT);
+	          $('#phone').val(trainer.users_PHONE);
+	          $('#status').val(trainer.users_STATE);
+	          $('#password').val(trainer.users_PASS);
+	          $('#passwordConfirm').val(trainer.users_PASS);
+	        });
+	      });
+	    },
+	    error: function(xhr, status, error) {
+	      console.log('Error:', error);
+	    }
+	  });
+	}
+
+	function getUserState(stateCode) {
+	  switch (stateCode) {
+	    case 602:
+	      return '탈퇴';
+	    case 603:
+	      return '휴면';
+	    case 604:
+	      return '정지';
+	    default:
+	      return '활동중';
+	  }
+	}
 function pageLoad3() {
 	var keyword = document.getElementById("keyword").value;
 	var search = document.getElementById("search").value;
@@ -628,10 +788,10 @@ function clickPage1(pageNumber) {
 	  $.ajax({
 	    url: '/trainer',
 	    method: 'GET',
-	    dataType: 'json',	    
+	    dataType: 'json',
 	    data: {
-		      currentPage: pageNumber
-		    },
+	      currentPage: pageNumber
+	    },
 	    success: function(response) {
 	      var tableBody = $('#trainerTableBody');
 	      tableBody.empty();
@@ -641,38 +801,63 @@ function clickPage1(pageNumber) {
 	      var formattedTrainerStartList = response.formattedTrainerStartList;
 	      var formattedTrainerEndList = response.formattedTrainerEndList;
 
-	      $.each(trainer, function(index, trainers) {
-	        var row = '<tr style="font-size: 15px;">' +
-	          '<th scope="row">' + (index + 1) + '</th>' +
-	          '<td>' + trainers.users_ID + '</td>' +
-	          '<td>' + trainers.users_NAME + '</td>' +
-	          '<td>' + formattedTrainerBirthList[index] + '</td>' +
-	          '<td>' + trainers.users_HEIGHT + '</td>' +
-	          '<td>' + trainers.users_WEIGHT + '</td>' +
-	          '<td>' + trainers.users_PHONE + '</td>' +
-	          '<td>' + trainers.users_ADDR + '</td>' +
-	          '<td>' + formattedTrainerStartList[index] + '</td>' +
-	          '<td>' + formattedTrainerEndList[index] + '</td>';
+	      $.each(trainer, function(index, trainer) {
+	        var row = $('<tr style="font-size: 15px;"></tr>');
 
-	        if (trainers.users_STATE === 602) {
-	          row += '<td>탈퇴</td>';
-	        } else if (trainers.users_STATE === 603) {
-	          row += '<td>휴면</td>';
-	        } else if (trainers.users_STATE === 604) {
-	          row += '<td>정지</td>';
-	        } else {
-	          row += '<td>활동중</td>';
-	        }
+	        var indexCell = $('<th scope="row">' + (index + 1) + '</th>');
+	        var userIdCell = $('<td>' + trainer.users_ID + '</td>');
+	        var userNameCell = $('<td>' + trainer.users_NAME + '</td>');
+	        var userBirthCell = $('<td>' + formattedTrainerBirthList[index] + '</td>');
+	        var userGenderCell = $('<td>' + (trainer.users_GENDER == 701 ? '남자' : '여자') + '</td>');
+	        var userHeightCell = $('<td>' + trainer.users_HEIGHT + '</td>');
+	        var userWeightCell = $('<td>' + trainer.users_WEIGHT + '</td>');
+	        var userPhoneCell = $('<td>' + trainer.users_PHONE + '</td>');
+	        var userAddressCell = $('<td>' + trainer.users_ADDR + '</td>');
+	        var userStartCell = $('<td>' + formattedTrainerStartList[index] + '</td>');
+	        var userEndCell = $('<td>' + formattedTrainerEndList[index] + '</td>');
+	        var userStateCell = $('<td></td>').text(getUserState(trainer.users_STATE));
 
-	        row += '</tr>';
-
+	        row.append(indexCell, userIdCell, userNameCell, userBirthCell, userGenderCell, userHeightCell, userWeightCell, userPhoneCell, userAddressCell, userStartCell, userEndCell, userStateCell);
 	        tableBody.append(row);
+
+	        // Add click event handler to the row
+	        row.click(function() {
+	          // Show the modal
+	          $('#myModal').modal('show');
+	          console.log("됩니까??");
+
+	          // Populate the form fields with user data
+	          $('#firstName').val(trainer.users_NAME);
+	          $('#lastName').val(trainer.users_ID);
+	          $('#address').val(trainer.users_ADDR);
+	          $('#birthDate').val(formattedTrainerBirthList[index]);
+	          $('#gender').val(trainer.users_GENDER == 701 ? '701' : '702');
+	          $('#height').val(trainer.users_HEIGHT);
+	          $('#weight').val(trainer.users_WEIGHT);
+	          $('#phone').val(trainer.users_PHONE);
+	          $('#status').val(trainer.users_STATE);
+	          $('#password').val(trainer.users_PASS);
+	          $('#passwordConfirm').val(trainer.users_PASS);
+	        });
 	      });
 	    },
 	    error: function(xhr, status, error) {
 	      console.log('Error:', error);
 	    }
 	  });
+	}
+
+	function getUserState(stateCode) {
+	  switch (stateCode) {
+	    case 602:
+	      return '탈퇴';
+	    case 603:
+	      return '휴면';
+	    case 604:
+	      return '정지';
+	    default:
+	      return '활동중';
+	  }
 	}
 function trainerpageLoad2() {
 	var keyword = document.getElementById("keyword2").value;

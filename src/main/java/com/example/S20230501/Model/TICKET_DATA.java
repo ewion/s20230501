@@ -10,9 +10,9 @@ public class TICKET_DATA {
 	
 	private int    TICKET_ID;
 	private int    TICKET_CODE;
-	private Date TICKET_BUY;  
-	private Date TICKET_START;  
-	private Date TICKET_END;  
+	private Date TICKET_BUY;
+	private Date TICKET_START;
+	private Date TICKET_END;
 	private String TICKET_ING;
 	private String TICKET_COM;
 	
