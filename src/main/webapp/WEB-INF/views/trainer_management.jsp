@@ -113,7 +113,17 @@ td {
 	margin-top: 3px;
 }
 
-#trainerComent {
+#comments {
+	align-items: center;
+}
+#trainerComment {
+	display: inline-block;
+	flex-direction: column;
+	align-items: flex-start;
+	margin-top: 10px;
+}
+
+#userComment{
 	display: inline-block;
 	flex-direction: column;
 	align-items: flex-start;
@@ -125,9 +135,6 @@ td {
 	justify-content: flex-end;
 }
 
-button {
-	margin-top: 10px;
-}
 
 addActivity {
 	display: flex;
@@ -218,10 +225,14 @@ function choiceDate(newDIV) {
   newDIV.classList.add("choiceDay"); // 선택된 날짜에 "choiceDay" class 추가
 
   // 클릭한 날짜의 연도, 월, 일을 추출하여 콘솔에 출력
-  const year = document.getElementById("calYear").innerText;
+	const year = String(today.getFullYear()).slice(-2);
   const month = document.getElementById("calMonth").innerText;
   const day = newDIV.innerHTML;
   console.log("선택한 날짜:", year, month, day);
+
+  //클릭한 날짜를 form태그 내의 input태그에 추가
+	var selectDate = year+"/"+month+"/"+day
+  document.getElementById("selectDate").value = year+"/"+month+"/"+day
 }
 
 
@@ -254,6 +265,42 @@ function leftPad(value) {
   return value;
 }
 
+// 버튼이 존재하는 로우 삭제
+function deleteRow(button) {
+	var row = button.parentNode.parentNode; // 클릭된 버튼의 부모 로우
+	row.parentNode.removeChild(row); // 로우 삭제
+}
+
+function addActivity() {
+	// 새로운 로우 생성
+	let newRow = document.createElement("tr");
+
+	// 로우의 id 설정
+	newRow.id = "recordDataRow";
+
+	// 인풋 태그를 포함한 셀들 추가
+	let cells = `
+    <td><input type="text" id="PLAY_TYPE" name="PLAY_TYPE" style="width: auto"></td>
+    <td><input type="text" id="RCOD_COUNT" name="RCOD_COUNT"></td>
+    <td>
+      <select id="rcodTypeSelect">
+        <option value="회">회</option>
+        <option value="km">km</option>
+        <option value="세트">세트</option>
+      </select>
+    </td>
+    <td><input type="text" id="RCOD_TRCOM" name="RCOD_TRCOM"></td>
+    <td><input type="text" id="RCOD_USCOM" name="RCOD_USCOM" readonly></td>
+    <td style="width: 65px;"><button onclick="deleteRow(this)">삭제</button></td>
+  `;
+
+	newRow.innerHTML = cells;
+
+	// 생성된 로우를 recordDataRow의 마지막에 추가
+	let recordDataRow = document.getElementById("recordDataRow");
+	recordDataRow.parentNode.insertBefore(newRow, recordDataRow.nextSibling);
+}
+
 </script>
 </head>
 
@@ -283,33 +330,73 @@ function leftPad(value) {
 				</tbody>
 			</table>
 		</div>
+
 		<div id="formDiv">
 			<form>
 				<div id="todayInfo">
-					23년 5월 23일, 도마뱀님의 일정관리
+					<input type="text" id="selectDate" value="${user.today}" readonly>, ${user.users_name}회원님 일정관리
 				</div>
-				오늘의 숙제
-				<button class="addActivity">추가</button><br>
-				<div id="trainerOrder">
+				<div id="orderTable">
+					<table class="table table-dark table-hover" style="max-width: 1200px;">
+						<thead>
+						<tr>
+							<th scope="col">활동</th>
+							<th scope="col">횟수</th>
+							<th scope="col">단위</th>
+							<th scope="col">TC</th>
+							<th scope="col">UC</th>
+							<th scope="col"></th>
+						</tr>
+						</thead>
+						<tbody id="memberTableBody">
+						<c:forEach var="recordData" items="${recordDataList}">
+							<tr id="recordDataRow">
+								<td><input type="text" id="PLAY_TYPE" name="PLAY_TYPE" value="${recordData.PLAY_TYPE}" style="width: auto"></td>
+								<td><input type="text" id="RCOD_COUNT" name="RCOD_COUNT" value="${recordData.RCOD_COUNT}"></td>
+								<td>
+									<select id="rcodTypeSelect">
+										<option value="회" ${recordData.RCOD_TYPE eq '501' ? 'selected' : ''}>회</option>
+										<option value="km" ${recordData.RCOD_TYPE eq '502' ? 'selected' : ''}>km</option>
+										<option value="세트" ${recordData.RCOD_TYPE eq '503' ? 'selected' : ''}>세트</option>
+									</select>
+								</td>
+								<td><input type="text" id="RCOD_TRCOM" name="RCOD_TRCOM" value="${recordData.RCOD_TRCOM}"></td>
+								<td><input type="text" id="RCOD_USCOM" name="RCOD_USCOM" value="${recordData.RCOD_USCOM}" readonly></td>
+								<td style="width: 65px;"><button onclick="deleteRow(this)">삭제</button></td>
+							</tr>
+						</c:forEach>
+						<div id="insertActivities"></div>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td id="insertActivitiesButtons"><button class="addActivity" onclick="addActivity()">추가</button></td>
+						</tr>
+
+						</tbody>
+					</table>
 
 					<div class="trainerOrderOne">
-						<input type="text" maxlength="10" placeholder="수행할 운동" st>
-						<input type="number" max="1000" placeholder="단위">
-						<select>
-							<option>회</option>
-							<option>분(min)</option>
-							<option>M(미터)</option>
-							<option>세트</option>
-						</select>
+
+
 					</div>
 				</div>
-				<div id="trainerComent">
-					트레이너 코멘트<br>
-					<textarea rows="10" maxlength="300" cols="58" style="margin-top: 8px"></textarea>
+				<div id="comments">
+					<div id="userComment">
+						회원코멘트<br>
+						<textarea rows="10" maxlength="300" cols="60" style="margin-top: 8px" readonly></textarea>
+					</div>
+					<div id="trainerComment">
+						트레이너 코멘트<br>
+						<textarea rows="10" maxlength="300" cols="60" style="margin-top: 8px">${userSchedule.SDU_COM}</textarea>
+					</div>
 					<div id="formButtons">
 						<button type="reset">취소</button>
 						<button type="submit">확인</button>
 					</div>
+
 				</div>
 
 			</form>

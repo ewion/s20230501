@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@include file="header.jsp"%>
 <!DOCTYPE html>
 <html>
@@ -127,6 +128,10 @@ background-color:rgb(52, 73, 94);
 	justify-content: flex-end;
 }
 
+#memberTable {
+	margin-top: 20px;
+}
+
 button {
 	margin-top: 10px;
 }
@@ -140,6 +145,7 @@ addActivity {
 <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
 
 <script>
+
 window.onload = function () {
   buildCalendar();
 };
@@ -221,10 +227,55 @@ function choiceDate(newDIV) {
   newDIV.classList.add("choiceDay"); // 선택된 날짜에 "choiceDay" class 추가
 
   // 클릭한 날짜의 연도, 월, 일을 추출하여 콘솔에 출력
-  const year = document.getElementById("calYear").innerText;
+	const year = String(today.getFullYear()).slice(-2);
   const month = document.getElementById("calMonth").innerText;
   const day = newDIV.innerHTML;
   console.log("선택한 날짜:", year, month, day);
+
+  // 클릭한 날짜를 form태그 내의 input태그에 추가
+  document.getElementById("selectDate").value = year+"/"+month+"/"+day
+
+	$.ajax({
+		url: '/todayMembersList',
+		method : 'GET',
+		data : {
+			selectDate: $('#selectDate').val(),
+			trainer_id: $('#trainer_id').val()
+		},
+		dataType: 'json',
+		success: function(response) {
+
+			var tableBody = $('#memberTableBody');
+			tableBody.empty();
+
+			// 성공적인 응답 처리
+			// response를 이용하여 테이블에 데이터를 추가하는 로직 작성
+			response.forEach(function(users) {
+				var row = '<tr>' +
+						'<td>' + users.users_name + '<input type="hidden" readonly id="users_id" name="users_id" value="' + users.users_id + '"></td>' +
+
+						'<td>';
+
+				if (users.users_gender == '701') {
+					row += '남';
+				} else if (users.users_gender == '702') {
+					row += '여';
+				}
+
+				row += '</td>' +
+						'<td>' + users.users_phone + '</td>' +
+						'<td>' + users.ticket_end.substring(0, 10) + '</td>' +
+						'<td></td>'+
+						'<td><button type="submit">확인</button></td>';
+
+				tableBody.append(row);
+			});
+		},
+		error: function (xhr, status,error) {
+			var tableBody = $('#memberTableBody');
+			tableBody.empty();
+		}
+	});
 }
 
 
@@ -256,10 +307,17 @@ function leftPad(value) {
   }
   return value;
 }
-  alert('today->'+today);
-  $('#today').val(today);
- // 	document.getElementById("today").value = today;
 
+// 페이지 로드 시 오늘 일자 추출
+document.addEventListener('DOMContentLoaded', function () {
+	const year = String(today.getFullYear()).slice(-2);
+	const month = String(today.getMonth() + 1).padStart(2, '0');
+	const day = String(today.getDate()).padStart(2, '0');
+	console.log("오늘 날짜 :", year, month, day);
+	document.getElementById("selectDate").value = year+"/"+month+"/"+day
+});
+
+// ajax
 </script>
 </head>
 
@@ -290,22 +348,39 @@ function leftPad(value) {
 			</table>
 		</div>
 		<div id="formDiv">
-			<form>
-				<input type="text" id="today" >
-
-				<div id="todayInfo">
-					23년 5월 23일, 도마뱀님의 일정관리
+			<form action="trainer_management" method="get">
+				<div id="memberTable">
+					<table class="table table-dark table-hover" style="max-width: 1200px;">
+						<a style="color: rgb(22, 160, 133);">트레이너 ${trainerInfo.USERS_NAME} 님 안녕하세요
+						<input id="selectDate" name="today" value="" readonly style="background-color:  rgb(52, 73, 94); align-items: center"> 일정 관리입니다.</a>
+						<tr>
+							<th scope="col">이름</th>
+							<th scope="col">성별</th>
+							<th scope="col">연락처</th>
+							<th scope="col">종료일</th>
+							<th scope="col">활동</th>
+							<th scope="col">관리</th>
+						</tr>
+						</thead>
+						<tbody id="memberTableBody">
+							<c:forEach var="users" items="${trainersMemberList}">
+								<tr>
+									<td>${users.users_name}<input type="hidden" readonly id="users_id" name="users_id" value="${users.users_id}"></td>
+									<td><c:choose>
+										<c:when test="${users.users_gender eq '701'}">남</c:when>
+										<c:when test="${users.users_gender eq '702'}">여</c:when>
+										</c:choose>
+									</td>
+									<td>${users.users_phone}</td>
+									<td>${fn:substring(users.ticket_end, 0, 10)}</td>
+									<td></td>
+									<td><button type="submit">확인</button></td>
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
 				</div>
-				<div id="memberList">
-					구독 회원<br>
-					<c:forEach var="name" items="${trainersMemberList}">
-						${name}<p>
-					</c:forEach>
-				</div>
-				<div id="memberSummary">
-
-				</div>
-
+				<input type="hidden" id="trainer_id" name="trainer_id" value="${trainerInfo.USERS_ID}" readonly>
 			</form>
 		</div>
 	</div>

@@ -2,10 +2,44 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.S20230501.TrainerMapper">
-    <select id="getTrainersMemberList" parameterType="String" resultType="String">
-        select u.users_name
-        from member m, ht_users_data u
-        where m.users_id = u.users_id and
-              m.trainer_id = #{trainerId}
+    <select id="getTrainersMemberList" parameterType="HT_USERS_DATA_ljy" resultType="HT_USERS_DATA_ljy">
+        SELECT u.*,t.ticket_end
+        FROM member m
+        JOIN ht_users_data u ON m.users_id = u.users_id
+        JOIN ticket_data t ON t.TICKET_ID = m.TICKET_ID
+        WHERE m.trainer_id = #{trainer_id}
+              AND #{today} &lt; t.TICKET_END
+    </select>
+
+    <select id="getTrainerInfo" parameterType="String" resultType="HT_USERS_DATA">
+        select *
+        from ht_users_data
+        where users_id = #{trainerId}
+    </select>
+
+    <select id="getUserInfo" parameterType="HT_USERS_DATA_ljy" resultType="HT_USERS_DATA_ljy">
+        select *
+        from ht_users_data
+        where users_id = #{users_id}
+    </select>
+
+    <select id="getUserSchedule" parameterType="HT_USERS_DATA_ljy" resultType="SCHEDULE">
+        select *
+        from schedule
+        where users_id = #{users_id}
+            and trainer_id = #{trainer_id}
+            and sdu_date = #{today}
+    </select>
+
+    <select id="getUserRecordDataList" parameterType="HT_USERS_DATA_ljy" resultType="RECORD_DATA">
+        select *
+        from  record_data
+        where sdu_id = (
+            select sdu_id
+            from schedule
+            where users_id = #{users_id}
+              and trainer_id = #{trainer_id}
+              and sdu_date = #{today}
+            )
     </select>
 </mapper>
