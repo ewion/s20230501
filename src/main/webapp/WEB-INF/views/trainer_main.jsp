@@ -234,6 +234,48 @@ function choiceDate(newDIV) {
 
   // 클릭한 날짜를 form태그 내의 input태그에 추가
   document.getElementById("selectDate").value = year+"/"+month+"/"+day
+
+	$.ajax({
+		url: '/todayMembersList',
+		method : 'GET',
+		data : {
+			selectDate: $('#selectDate').val(),
+			trainer_id: $('#trainer_id').val()
+		},
+		dataType: 'json',
+		success: function(response) {
+
+			var tableBody = $('#memberTableBody');
+			tableBody.empty();
+
+			// 성공적인 응답 처리
+			// response를 이용하여 테이블에 데이터를 추가하는 로직 작성
+			response.forEach(function(users) {
+				var row = '<tr>' +
+						'<td>' + users.users_name + '<input type="hidden" readonly id="users_id" name="users_id" value="' + users.users_id + '"></td>' +
+
+						'<td>';
+
+				if (users.users_gender == '701') {
+					row += '남';
+				} else if (users.users_gender == '702') {
+					row += '여';
+				}
+
+				row += '</td>' +
+						'<td>' + users.users_phone + '</td>' +
+						'<td>' + users.ticket_end.substring(0, 10) + '</td>' +
+						'<td></td>'+
+						'<td><button type="submit">확인</button></td>';
+
+				tableBody.append(row);
+			});
+		},
+		error: function (xhr, status,error) {
+			var tableBody = $('#memberTableBody');
+			tableBody.empty();
+		}
+	});
 }
 
 
@@ -306,11 +348,11 @@ document.addEventListener('DOMContentLoaded', function () {
 			</table>
 		</div>
 		<div id="formDiv">
-			<form>
+			<form action="trainer_management" method="get">
 				<div id="memberTable">
 					<table class="table table-dark table-hover" style="max-width: 1200px;">
 						<a style="color: rgb(22, 160, 133);">트레이너 ${trainerInfo.USERS_NAME} 님 안녕하세요
-						<input id="selectDate" name="selectDate" value="" readonly style="background-color:  rgb(52, 73, 94); align-items: center"> 일정 관리입니다.</a>
+						<input id="selectDate" name="today" value="" readonly style="background-color:  rgb(52, 73, 94); align-items: center"> 일정 관리입니다.</a>
 						<tr>
 							<th scope="col">이름</th>
 							<th scope="col">성별</th>
@@ -323,7 +365,7 @@ document.addEventListener('DOMContentLoaded', function () {
 						<tbody id="memberTableBody">
 							<c:forEach var="users" items="${trainersMemberList}">
 								<tr>
-									<td>${users.users_name}</td>
+									<td>${users.users_name}<input type="hidden" readonly id="users_id" name="users_id" value="${users.users_id}"></td>
 									<td><c:choose>
 										<c:when test="${users.users_gender eq '701'}">남</c:when>
 										<c:when test="${users.users_gender eq '702'}">여</c:when>
@@ -332,13 +374,13 @@ document.addEventListener('DOMContentLoaded', function () {
 									<td>${users.users_phone}</td>
 									<td>${fn:substring(users.ticket_end, 0, 10)}</td>
 									<td></td>
-									<td><button type="submit">상세</button></td>
+									<td><button type="submit">확인</button></td>
 								</tr>
 							</c:forEach>
 						</tbody>
 					</table>
 				</div>
-				<input type="hidden" id="trainer_id" name="trainer_id" value="${trainerInfo.USERS_NAME}" readonly>
+				<input type="hidden" id="trainer_id" name="trainer_id" value="${trainerInfo.USERS_ID}" readonly>
 			</form>
 		</div>
 	</div>

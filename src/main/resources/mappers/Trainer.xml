@@ -16,4 +16,30 @@
         from ht_users_data
         where users_id = #{trainerId}
     </select>
+
+    <select id="getUserInfo" parameterType="HT_USERS_DATA_ljy" resultType="HT_USERS_DATA_ljy">
+        select *
+        from ht_users_data
+        where users_id = #{users_id}
+    </select>
+
+    <select id="getUserSchedule" parameterType="HT_USERS_DATA_ljy" resultType="SCHEDULE">
+        select *
+        from schedule
+        where users_id = #{users_id}
+            and trainer_id = #{trainer_id}
+            and sdu_date = #{today}
+    </select>
+
+    <select id="getUserRecordDataList" parameterType="HT_USERS_DATA_ljy" resultType="RECORD_DATA">
+        select *
+        from  record_data
+        where sdu_id = (
+            select sdu_id
+            from schedule
+            where users_id = #{users_id}
+              and trainer_id = #{trainer_id}
+              and sdu_date = #{today}
+            )
+    </select>
 </mapper>

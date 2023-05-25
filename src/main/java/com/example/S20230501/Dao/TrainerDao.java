@@ -1,8 +1,6 @@
 package com.example.S20230501.Dao;
 
-import com.example.S20230501.Model.Biz;
-import com.example.S20230501.Model.HT_USERS_DATA;
-import com.example.S20230501.Model.HT_USERS_DATA_ljy;
+import com.example.S20230501.Model.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSession;
@@ -39,6 +37,38 @@ public class TrainerDao implements TrainerDaoImpl {
 	public HT_USERS_DATA getTrainerInfo(String trainerId) {
 		try {
 			return session.selectOne("getTrainerInfo", trainerId);
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+
+	@Override
+	public HT_USERS_DATA_ljy getUserInfo(HT_USERS_DATA_ljy user) {
+		try {
+			String trainer_id = user.getTrainer_id();
+			String today = user.getToday();
+			user = session.selectOne("getUserInfo", user);
+			user.setTrainer_id(trainer_id);
+			user.setToday(today);
+			return user;
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+
+	@Override
+	public SCHEDULE getUserSchedule(HT_USERS_DATA_ljy user) {
+		try {
+			return session.selectOne("getUserSchedule", user);
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+
+	@Override
+	public List<RECORD_DATA> getUserRecordDataList(HT_USERS_DATA_ljy user) {
+		try {
+			return session.selectList("getUserRecordDataList", user);
 		} catch (Exception e) {
 			throw e;
 		}
