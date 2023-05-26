@@ -1,15 +1,13 @@
 package com.example.S20230501.Controller;
 
-import com.example.S20230501.Model.HT_USERS_DATA;
-import com.example.S20230501.Model.HT_USERS_DATA_ljy;
-import com.example.S20230501.Model.RECORD_DATA;
-import com.example.S20230501.Model.SCHEDULE;
+import com.example.S20230501.Model.*;
 import com.example.S20230501.Service.TrainerService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.time.LocalDate;
@@ -40,7 +38,7 @@ public class TrainerController {
         //구독기간이 진행중인 트레이너 구독 회원 추출
         HT_USERS_DATA_ljy subUsers = new HT_USERS_DATA_ljy();
         subUsers.setTrainer_id(trainerId);
-        subUsers.setToday(today);
+        subUsers.setSelectDate(today);
         List<HT_USERS_DATA_ljy> trainersMemberList = TS.getTrainersMemberList(subUsers);
         System.out.println("trainersMemberList = "+trainersMemberList);
         model.addAttribute("trainerInfo", trainerInfo);
@@ -55,7 +53,7 @@ public class TrainerController {
                                                             String trainer_id) {
         HT_USERS_DATA_ljy subUsers = new HT_USERS_DATA_ljy();
         subUsers.setTrainer_id(trainer_id);
-        subUsers.setToday(selectDate);
+        subUsers.setSelectDate(selectDate);
         List<HT_USERS_DATA_ljy> selectDayUsersList = TS.getTrainersMemberList(subUsers);
 
         // 변수잘왔나체크
@@ -68,19 +66,29 @@ public class TrainerController {
     public String trainer_management(HT_USERS_DATA_ljy user, Model model) {
         System.out.println("trainer_management");
         System.out.println("users_id = "+user.getUsers_id());
-        System.out.println("selectDay = "+user.getToday());
+        System.out.println("selectDay = "+user.getSelectDate());
         System.out.println("trainer_id = "+user.getTrainer_id());
 
         user = TS.getUserInfo(user);
         SCHEDULE userSchedule = TS.getUserSchedule(user);
         List<RECORD_DATA> recordDataList = TS.getUserRecordDataList(user);
 
-        System.out.println("user = "+user);
-        System.out.println("userSchedule = "+userSchedule);
-        System.out.println("recordDataList = "+recordDataList);
+        System.out.println("trainer_management user = "+user);
+        System.out.println("trainer_management userSchedule = "+userSchedule);
+        System.out.println("trainer_management recordDataList = "+recordDataList);
         model.addAttribute("user",user);
         model.addAttribute("userSchedule", userSchedule);
         model.addAttribute("recordDataList", recordDataList);
         return "trainer_management";
     }
+
+    @PostMapping("insertTrainerScheldules")
+    public  String insertTrainerScheldules(Record_data_arr recordDatas, SCHEDULE schedule, Model model) {
+        System.out.println("insertTrainerSchedules");
+        System.out.println("insertTrainerSchedules recordDatas = "+recordDatas);
+        System.out.println("insertTrainerSchedules schedule = "+schedule);
+
+        return "redirect:trainer_main";
+    }
+
 }

@@ -46,10 +46,10 @@ public class TrainerDao implements TrainerDaoImpl {
 	public HT_USERS_DATA_ljy getUserInfo(HT_USERS_DATA_ljy user) {
 		try {
 			String trainer_id = user.getTrainer_id();
-			String today = user.getToday();
+			String today = user.getSelectDate();
 			user = session.selectOne("getUserInfo", user);
 			user.setTrainer_id(trainer_id);
-			user.setToday(today);
+			user.setSelectDate(today);
 			return user;
 		} catch (Exception e) {
 			throw e;
@@ -59,6 +59,8 @@ public class TrainerDao implements TrainerDaoImpl {
 	@Override
 	public SCHEDULE getUserSchedule(HT_USERS_DATA_ljy user) {
 		try {
+			SCHEDULE userSchedule = session.selectOne("getUserSchedule", user);
+			if (userSchedule == null) session.insert("insertUserSchedule", user);
 			return session.selectOne("getUserSchedule", user);
 		} catch (Exception e) {
 			throw e;

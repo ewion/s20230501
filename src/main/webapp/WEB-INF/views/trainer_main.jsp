@@ -352,7 +352,7 @@ document.addEventListener('DOMContentLoaded', function () {
 				<div id="memberTable">
 					<table class="table table-dark table-hover" style="max-width: 1200px;">
 						<a style="color: rgb(22, 160, 133);">트레이너 ${trainerInfo.USERS_NAME} 님 안녕하세요
-						<input id="selectDate" name="today" value="" readonly style="background-color:  rgb(52, 73, 94); align-items: center"> 일정 관리입니다.</a>
+						<input id="selectDate" name="selectDate" value="" readonly style="background-color:  rgb(52, 73, 94); align-items: center"> 일정 관리입니다.</a>
 						<tr>
 							<th scope="col">이름</th>
 							<th scope="col">성별</th>

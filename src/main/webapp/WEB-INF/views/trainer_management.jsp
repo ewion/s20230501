@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@include file="header.jsp"%>
 <!DOCTYPE html>
 <html>
@@ -225,14 +226,20 @@ function choiceDate(newDIV) {
   newDIV.classList.add("choiceDay"); // 선택된 날짜에 "choiceDay" class 추가
 
   // 클릭한 날짜의 연도, 월, 일을 추출하여 콘솔에 출력
-	const year = String(today.getFullYear()).slice(-2);
+  const year = String(today.getFullYear()).slice(-2);
   const month = document.getElementById("calMonth").innerText;
   const day = newDIV.innerHTML;
   console.log("선택한 날짜:", year, month, day);
 
   //클릭한 날짜를 form태그 내의 input태그에 추가
-	var selectDate = year+"/"+month+"/"+day
-  document.getElementById("selectDate").value = year+"/"+month+"/"+day
+  var selectDate = year+"/"+month+"/"+day
+  document.getElementById("selectDate").value = selectDate;
+	var selectDate = $('#selectDate').val();
+	var trainer_id = $('#trainer_id').val();
+	var users_id = $('#users_id').val();
+
+	window.location.href = "/trainer_management?selectDate=" + selectDate + "&trainer_id=" + trainer_id + "&users_id=" + users_id;
+
 }
 
 
@@ -265,40 +272,14 @@ function leftPad(value) {
   return value;
 }
 
-// 버튼이 존재하는 로우 삭제
-function deleteRow(button) {
-	var row = button.parentNode.parentNode; // 클릭된 버튼의 부모 로우
-	row.parentNode.removeChild(row); // 로우 삭제
-}
-
-function addActivity() {
-	// 새로운 로우 생성
-	let newRow = document.createElement("tr");
-
-	// 로우의 id 설정
-	newRow.id = "recordDataRow";
-
-	// 인풋 태그를 포함한 셀들 추가
-	let cells = `
-    <td><input type="text" id="PLAY_TYPE" name="PLAY_TYPE" style="width: auto"></td>
-    <td><input type="text" id="RCOD_COUNT" name="RCOD_COUNT"></td>
-    <td>
-      <select id="rcodTypeSelect">
-        <option value="회">회</option>
-        <option value="km">km</option>
-        <option value="세트">세트</option>
-      </select>
-    </td>
-    <td><input type="text" id="RCOD_TRCOM" name="RCOD_TRCOM"></td>
-    <td><input type="text" id="RCOD_USCOM" name="RCOD_USCOM" readonly></td>
-    <td style="width: 65px;"><button onclick="deleteRow(this)">삭제</button></td>
-  `;
-
-	newRow.innerHTML = cells;
-
-	// 생성된 로우를 recordDataRow의 마지막에 추가
-	let recordDataRow = document.getElementById("recordDataRow");
-	recordDataRow.parentNode.insertBefore(newRow, recordDataRow.nextSibling);
+function checkNowDate() {
+	alert(today);
+	var selectDate = document.getElementById('selectDate').value;
+	alert(document.getElementById('selectDate').value);
+	if (selectDate < today) {
+		alert("지난 일정은 수정할 수 없습니다.");
+		return false;
+	}
 }
 
 </script>
@@ -332,9 +313,11 @@ function addActivity() {
 		</div>
 
 		<div id="formDiv">
-			<form>
+			<form action="insertTrainerScheldules" method="post" onsubmit="return checkNowDate()">
 				<div id="todayInfo">
-					<input type="text" id="selectDate" value="${user.today}" readonly>, ${user.users_name}회원님 일정관리
+					<input type="text" id="selectDate" name="selectDate" value="${user.selectDate}" readonly>, ${user.users_name}회원님 일정관리
+					<input type="hidden" id="users_id" name="users_id" value="${user.users_id}">
+					<input type="hidden" id="trainer_id" name="trainer_id" value="${user.trainer_id}">
 				</div>
 				<div id="orderTable">
 					<table class="table table-dark table-hover" style="max-width: 1200px;">
@@ -345,43 +328,42 @@ function addActivity() {
 							<th scope="col">단위</th>
 							<th scope="col">TC</th>
 							<th scope="col">UC</th>
-							<th scope="col"></th>
 						</tr>
 						</thead>
 						<tbody id="memberTableBody">
-						<c:forEach var="recordData" items="${recordDataList}">
-							<tr id="recordDataRow">
-								<td><input type="text" id="PLAY_TYPE" name="PLAY_TYPE" value="${recordData.PLAY_TYPE}" style="width: auto"></td>
-								<td><input type="text" id="RCOD_COUNT" name="RCOD_COUNT" value="${recordData.RCOD_COUNT}"></td>
+<%--						<c:forEach var="recordData" items="${recordDataList}" varStatus="status">
+							<tr id="recordData${status.index}">
+								<td><input type="text" id="PLAY_TYPE${status.index}" name="PLAY_TYPE${status.index}" value="${recordData.PLAY_TYPE}" style="width: auto"></td>
+								<td><input type="text" id="RCOD_COUNT${status.index}" name="RCOD_COUNT${status.index}" value="${recordData.RCOD_COUNT}"></td>
 								<td>
-									<select id="rcodTypeSelect">
+									<select id="RCOD_TYPE${status.index}" name="RCOD_TYPE${status.index}">
 										<option value="회" ${recordData.RCOD_TYPE eq '501' ? 'selected' : ''}>회</option>
 										<option value="km" ${recordData.RCOD_TYPE eq '502' ? 'selected' : ''}>km</option>
 										<option value="세트" ${recordData.RCOD_TYPE eq '503' ? 'selected' : ''}>세트</option>
 									</select>
 								</td>
-								<td><input type="text" id="RCOD_TRCOM" name="RCOD_TRCOM" value="${recordData.RCOD_TRCOM}"></td>
-								<td><input type="text" id="RCOD_USCOM" name="RCOD_USCOM" value="${recordData.RCOD_USCOM}" readonly></td>
-								<td style="width: 65px;"><button onclick="deleteRow(this)">삭제</button></td>
+								<td><input type="text" id="RCOD_TRCOM${status.index}" name="RCOD_TRCOM${status.index}" value="${recordData.RCOD_TRCOM}"></td>
+								<td><input type="text" id="RCOD_USCOM${status.index}" name="RCOD_USCOM${status.index}" value="${recordData.RCOD_USCOM}" readonly></td>
+							</tr>
+						</c:forEach>--%>
+
+						<c:forEach begin="${fn:length(recordDataList)}" end="4" varStatus="status">
+							<tr id="recordData${status.index}">
+								<td><input type="text" id="PLAY_TYPE${status.index}" name="play_type" value="" style="width: auto"></td>
+								<td><input type="text" id="RCOD_COUNT${status.index}" name="rcod_count" value=""></td>
+								<td>
+									<select id="RCOD_TYPE${status.index}" name="RCOD_TYPE">
+										<option value="회">회</option>
+										<option value="km">km</option>
+										<option value="세트">세트</option>
+									</select>
+								</td>
+								<td><input type="text" id="RCOD_TRCOM${status.index}" name="RCOD_TRCOM" value=""></td>
+								<td><input type="text" id="RCOD_USCOM${status.index}" name="RCOD_USCOM" value="" readonly></td>
 							</tr>
 						</c:forEach>
-						<div id="insertActivities"></div>
-						<tr>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td id="insertActivitiesButtons"><button class="addActivity" onclick="addActivity()">추가</button></td>
-						</tr>
-
 						</tbody>
 					</table>
-
-					<div class="trainerOrderOne">
-
-
-					</div>
 				</div>
 				<div id="comments">
 					<div id="userComment">
@@ -396,9 +378,7 @@ function addActivity() {
 						<button type="reset">취소</button>
 						<button type="submit">확인</button>
 					</div>
-
 				</div>
-
 			</form>
 		</div>
 	</div>

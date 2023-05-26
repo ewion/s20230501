@@ -38,7 +38,7 @@ public class HT_USERS_DATA_ljy {
 
 	private String ticket_end;
 
-	private String today;
+	private String selectDate;
 
 	private int checkSchedule;
 	private int checkDiet;		//

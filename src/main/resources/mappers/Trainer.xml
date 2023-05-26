@@ -8,7 +8,7 @@
         JOIN ht_users_data u ON m.users_id = u.users_id
         JOIN ticket_data t ON t.TICKET_ID = m.TICKET_ID
         WHERE m.trainer_id = #{trainer_id}
-              AND #{today} &lt; t.TICKET_END
+              AND #{selectDate} &lt; t.TICKET_END
     </select>
 
     <select id="getTrainerInfo" parameterType="String" resultType="HT_USERS_DATA">
@@ -28,7 +28,7 @@
         from schedule
         where users_id = #{users_id}
             and trainer_id = #{trainer_id}
-            and sdu_date = #{today}
+            and sdu_date = #{selectDate}
     </select>
 
     <select id="getUserRecordDataList" parameterType="HT_USERS_DATA_ljy" resultType="RECORD_DATA">
@@ -39,7 +39,13 @@
             from schedule
             where users_id = #{users_id}
               and trainer_id = #{trainer_id}
-              and sdu_date = #{today}
+              and sdu_date = #{selectDate}
             )
     </select>
+
+    <insert id="insertUserSchedule" parameterType="HT_USERS_DATA_ljy">
+        insert into schedule(sdu_id, users_id, trainer_id, sdu_date)
+        values (sdu_id_seq.nextval, #{users_id}, #{trainer_id}, #{selectDate})
+
+    </insert>
 </mapper>
