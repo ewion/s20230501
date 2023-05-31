@@ -75,4 +75,33 @@ public class TrainerDao implements TrainerDaoImpl {
 			throw e;
 		}
 	}
+
+	@Override
+	public int deleteRecord(int rcodId) {
+		try {
+			return session.delete("deleteRecord", rcodId);
+ 		} catch (Exception e) {
+			throw e;
+		}
+	}
+
+	@Override
+	public void insertRecord(HT_USERS_DATA_ljy data) {
+		try {
+			SCHEDULE schedule = session.selectOne("getUserSchedule", data);
+			data.setSDU_ID(schedule.getSDU_ID());
+			session.insert("insertRecord", data);
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+
+	@Override
+	public void insertTrainerScheldules(HT_USERS_DATA_ljy schedule) {
+		try {
+			session.update("insertTrainerScheldules", schedule);
+		} catch (Exception e) {
+			throw e;
+		}
+	}
 }

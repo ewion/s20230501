@@ -43,6 +43,21 @@ public class HT_USERS_DATA_ljy {
 	private int checkSchedule;
 	private int checkDiet;		//
 	private int checkActivities;	// 숙제를 0 안함, 1 하긴함, 2 다함
+
+	// record_data 조인용
+	private int    RCOD_ID;
+	private int    SDU_ID;
+	private Date RECORD_DATE;
+	private String PLAY_TYPE;
+	private int    RCOD_COUNT;
+	private String RCOD_TYPE;
+	private String RCOD_TRCOM;
+	private String RCOD_USCOM;
+
+	private String SDU_COM;
+
+	private int max_trcom;
+	private int nn_uscom;
 	
 
 

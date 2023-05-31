@@ -44,4 +44,19 @@ public class TrainerService implements TrainerServiceImple {
     public List<RECORD_DATA> getUserRecordDataList(HT_USERS_DATA_ljy user) {
         return TD.getUserRecordDataList(user);
     }
+
+    @Override
+    public int deleteRecord(int rcodId) {
+        return TD.deleteRecord(rcodId);
+    }
+
+    @Override
+    public void insertRecord(HT_USERS_DATA_ljy data) {
+        TD.insertRecord(data);
+    }
+
+    @Override
+    public void insertTrainerScheldules(HT_USERS_DATA_ljy schedule) {
+        TD.insertTrainerScheldules(schedule);
+    }
 }

@@ -15,4 +15,10 @@ public interface TrainerDaoImpl {
     SCHEDULE getUserSchedule(HT_USERS_DATA_ljy user);
 
     List<RECORD_DATA> getUserRecordDataList(HT_USERS_DATA_ljy user);
+
+    int deleteRecord(int rcodId);
+
+    void insertRecord(HT_USERS_DATA_ljy data);
+
+    void insertTrainerScheldules(HT_USERS_DATA_ljy schedule);
 }

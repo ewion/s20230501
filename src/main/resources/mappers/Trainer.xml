@@ -43,9 +43,22 @@
             )
     </select>
 
-    <insert id="insertUserSchedule" parameterType="HT_USERS_DATA_ljy">
-        insert into schedule(sdu_id, users_id, trainer_id, sdu_date)
-        values (sdu_id_seq.nextval, #{users_id}, #{trainer_id}, #{selectDate})
+    <insert id="insertTrainerScheldules" parameterType="HT_USERS_DATA_ljy">
+        update schedule
+        set sdu_com = #{SDU_COM}
+        where trainer_id = #{trainer_id}
+            and users_id = #{users_id}
+            and sdu_date = #{selectDate}
 
+    </insert>
+
+    <delete id="deleteRecord" parameterType="int">
+        delete from record_data
+        where rcod_id = #{rcodId}
+    </delete>
+
+    <insert id="insertRecord" parameterType="HT_USERS_DATA_ljy">
+        insert into record_data(rcod_id,             sdu_id,    record_date,  play_type,    rcod_count,    rcod_type,    rcod_trcom)
+        values                 (rcod_id_seq.nextval, #{SDU_ID}, #{selectDate},#{PLAY_TYPE}, #{RCOD_COUNT}, #{RCOD_TYPE}, #{RCOD_TRCOM})
     </insert>
 </mapper>

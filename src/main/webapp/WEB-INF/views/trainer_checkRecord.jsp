@@ -272,57 +272,27 @@ function leftPad(value) {
   return value;
 }
 
-function insertRecord() {
+function checkNowDate() {
+	alert(today);
+	var selectDate = document.getElementById('selectDate').value;
+	alert(document.getElementById('selectDate').value);
+	if (selectDate < today) {
+		alert("지난 일정은 수정할 수 없습니다.");
+		return false;
+	}
+}
+
+function InsertRecord() {
 	var selectDate = document.getElementById("selectDate").value;
 	var users_id = document.getElementById("users_id").value;
 	var trainer_id = document.getElementById("trainer_id").value;
-	var PLAY_TYPE = document.getElementById("PLAY_TYPE").value;
-	var RCOD_COUNT = document.getElementById("RCOD_COUNT").value;
-	var RCOD_TYPE = document.getElementById("RCOD_TYPE").value;
-	var RCOD_TRCOM = document.getElementById("RCOD_TRCOM").value;
 
-	$.ajax(
-			{
-				url:'/insertRecord',
-				data: { selectDate : selectDate,
-						users_id: users_id,
-						trainer_id: trainer_id,
-						PLAY_TYPE : PLAY_TYPE,
-						RCOD_COUNT : RCOD_COUNT,
-						RCOD_TYPE : RCOD_TYPE,
-						RCOD_TRCOM : RCOD_TRCOM
-				},
-				method: 'post',
-				dataType: 'text',
-				success:function () {
-					location.reload();
-				}
-			}
-	)
-}
-
-
-function deleteRecord(vIndex) {
-	var selRCOD_ID = $("#RCOD_ID"+vIndex).val();
-	$.ajax(
-			{
-				url :'/deleteRecord',
-				data :{RCOD_ID : selRCOD_ID},
-				method: 'post',
-				dataType: 'text',
-				success:function (data) {
-					location.reload();
-				}
-			}
-	)
 
 }
-
 
 function goMain() {
 	window.location.href = "/trainer_main";
 }
-
 </script>
 </head>
 
@@ -354,9 +324,8 @@ function goMain() {
 		</div>
 
 		<div id="formDiv">
-			<form action="insertTrainerScheldules" method="post" onsubmit="return checkNowDate()">
 				<div id="todayInfo">
-					<input type="text" id="selectDate" name="selectDate" value="${user.selectDate}" readonly>, ${user.users_name}회원님 일정관리
+					<input type="text" id="selectDate" name="selectDate" value="${user.selectDate}" readonly>, ${user.users_name}회원님 과거일정확인
 					<input type="hidden" id="users_id" name="users_id" value="${user.users_id}">
 					<input type="hidden" id="trainer_id" name="trainer_id" value="${user.trainer_id}">
 				</div>
@@ -369,32 +338,13 @@ function goMain() {
 							<th scope="col">단위</th>
 							<th scope="col">TC</th>
 							<th scope="col">UC</th>
-							<th scope="col"></th>
 						</tr>
 						</thead>
 
 						<tbody id="memberTableBody">
-
-						<tr id="recordData">
-							<td><input type="text" id="PLAY_TYPE" name="PLAY_TYPE" value="활동명" style="width: auto"></td>
-							<td><input type="number" id="RCOD_COUNT" name="RCOD_COUNT" value="0"></td>
-							<td>
-								<select id="RCOD_TYPE" name="RCOD_TYPE">
-									<option value="501" >회</option>
-									<option value="502" >km</option>
-									<option value="503" >세트</option>
-								</select>
-							</td>
-							<td><input type="text" id="RCOD_TRCOM" name="RCOD_TRCOM" value=""></td>
-							<td><input type="text" id="RCOD_USCOM" name="RCOD_USCOM" value="" readonly></td>
-							<td><input type="button" onclick="insertRecord()" value="입력"></td>
-
-						</tr>
-
  						<c:forEach var="recordData" items="${recordDataList}" varStatus="status">
 							<tr id="recordData${status.index}">
-								<td>${recordData.PLAY_TYPE}
-								<input type="hidden" id="RCOD_ID${status.index}" name="RCOD_ID${status.index}" value="${recordData.RCOD_ID}"></td>
+								<td>${recordData.PLAY_TYPE}</td>
 								<td>${recordData.RCOD_COUNT}</td>
 								<td>
 									<div id="RCOD_TYPE${status.index}">
@@ -416,15 +366,11 @@ function goMain() {
 								</td>
 								<td>${recordData.RCOD_TRCOM}</td>
 								<td>${recordData.RCOD_USCOM}</td>
-								<td><input type="button" onclick="deleteRecord(${status.index})" value="삭제"></td>
 							</tr>
 						</c:forEach>
-
-
 						</tbody>
 					</table>
 				</div>
-
 				<div id="comments">
 					<div id="userComment">
 						회원코멘트<br>
@@ -432,12 +378,11 @@ function goMain() {
 					</div>
 					<div id="trainerComment">
 						트레이너 코멘트<br>
-						<textarea id="SDU_COM" name="SDU_COM" rows="10" maxlength="300" cols="60" style="margin-top: 8px">${userSchedule.SDU_COM}</textarea>
+						<textarea rows="10" maxlength="300" cols="60" style="margin-top: 8px" readonly>${userSchedule.SDU_COM}</textarea>
 					</div>
-					<div id="formButtons">
-						<button type="button" onclick="goMain()">메인</button>
-						<button type="submit">확인</button>
-					</div>
+				</div>
+				<div id="formButtons">
+				<button type="button" onclick="goMain()">메인</button>
 				</div>
 			</form>
 		</div>

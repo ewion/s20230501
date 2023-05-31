@@ -8,8 +8,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -34,6 +37,7 @@ public class TrainerController {
 
         // 트레이너 ID로 트레이너 정보 추출
         HT_USERS_DATA trainerInfo = TS.getTrainerInfo(trainerId);
+
 
         //구독기간이 진행중인 트레이너 구독 회원 추출
         HT_USERS_DATA_ljy subUsers = new HT_USERS_DATA_ljy();
@@ -79,16 +83,52 @@ public class TrainerController {
         model.addAttribute("user",user);
         model.addAttribute("userSchedule", userSchedule);
         model.addAttribute("recordDataList", recordDataList);
+
+        // 날짜비교하기위해
+        Date today = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yy/MM/dd");
+        String dateString = dateFormat.format(today);
+        try {
+            Date selectDate = dateFormat.parse(user.getSelectDate()); // 선택한 날짜를 date타입으로 변환
+            Date formatToday = dateFormat.parse(dateString);
+            System.out.println("selectDate = "+selectDate);
+            System.out.println("formatToday = "+formatToday);
+
+            int compareDate = selectDate.compareTo(formatToday);
+
+            //선택한날이 오늘 or 미래면 관리페이지로 이동
+            if (compareDate >= 0) {
+                return "trainer_management";
+            } else return "trainer_checkRecord";
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return "trainer_management";
     }
 
     @PostMapping("insertTrainerScheldules")
-    public  String insertTrainerScheldules(Record_data_arr recordDatas, SCHEDULE schedule, Model model) {
+    public  String insertTrainerScheldules(HT_USERS_DATA_ljy schedule, Model model) {
         System.out.println("insertTrainerSchedules");
-        System.out.println("insertTrainerSchedules recordDatas = "+recordDatas);
         System.out.println("insertTrainerSchedules schedule = "+schedule);
 
+        // 인서트지만 이미 테이블을 생성한 상태이므로 update사용할예정
+        TS.insertTrainerScheldules(schedule);
         return "redirect:trainer_main";
+    }
+
+
+    @ResponseBody
+    @PostMapping("deleteRecord")
+    public int deleteRecord(int RCOD_ID) {
+        int data = TS.deleteRecord(RCOD_ID);
+        return data;
+    }
+
+    @ResponseBody
+    @PostMapping("insertRecord")
+    public void insertRecord(HT_USERS_DATA_ljy data) {
+        System.out.println("insertRecord data = "+data);
+        TS.insertRecord(data);
     }
 
 }
